@@ -96,6 +96,62 @@ def test_Rectangle_draw_rectangle_fails_when_a_point_is_out_of_bounds():
         canvas.draw_rectangle(rectangle2)
 
 
+def test_Canvas_bucket_fill_shape():
+    width, height = 10, 10
+    canvas = Canvas(width, height)
+    line = Line(Point(0, 1), Point(9, 1))
+    canvas.draw_line(line)
+    canvas.bucket_fill(Point(0, 1), 'o')
+    #line has been filled
+    for point in line.get_points():
+        assert canvas.cells[point.x][point.y] == (CanvasCellContentType.Line, 'o')
+    #rest have not been filled
+    for x in range(width):
+        for y in range(height):
+            if Point(x, y) not in line.get_points():
+                assert canvas.cells[x][y] == (CanvasCellContentType.Empty, ' ')
+
+
+def test_Canvas_bucket_fill_area():
+    width, height = 10, 10
+    canvas = Canvas(width, height)
+    line = Line(Point(0, 2), Point(9, 2))
+    canvas.draw_line(line)
+    canvas.bucket_fill(Point(0, 0), 'o')
+    #top area have been filled
+    for x in range(width):
+        assert (canvas.cells[x][0] == (CanvasCellContentType.Empty, 'o') and
+                canvas.cells[x][1] == (CanvasCellContentType.Empty, 'o'))
+        #bottom area have not been filled
+        for y in range(3, height):
+            assert canvas.cells[x][y] == (CanvasCellContentType.Empty, ' ')
+    #line have not been filled
+    for point in line.get_points():
+        assert canvas.cells[point.x][point.y] == (CanvasCellContentType.Line, 'x')
+
+
+def test_Canvas_bucket_fill_fails_when_target_out_of_bounds():
+    canvas = Canvas(50, 50)
+    target = Point(100, 25)
+    with pytest.raises(OutOfCanvasBoundError):
+        canvas.bucket_fill(target, 'o')
+
+
+def test_Canvas_delete_shape():
+    pass
+
+
+def test_Canvas_delete_colour():
+    pass
+
+
+def test_Canvas_delete_fails_when_target_out_of_bounds():
+    canvas = Canvas(50, 50)
+    target = Point(100, 25)
+    with pytest.raises(OutOfCanvasBoundError):
+        canvas.delete(target)
+
+
 ######## Test Point ########
 
 def test_Point_initialize():
@@ -109,8 +165,6 @@ def test_Point_creation_fails_whith_incorrect_params():
         Point("hi", 5)
     with pytest.raises(TypeError):
         Point(1, ValueError())
-    with pytest.raises(ValueError):
-        Point(-1, 5)
 
 
 ######## Test Line ########
