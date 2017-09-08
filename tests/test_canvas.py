@@ -3,7 +3,9 @@ from canvas import (
     Canvas,
     CanvasCellContentType,
     OutOfCanvasBoundError,
-    Point
+    Point,
+    Line,
+    Rectangle
 )
 
 def test_Canvas_creation_fails_whith_incorrect_params():
@@ -57,3 +59,51 @@ def test_Point_creation_fails_whith_incorrect_params():
         Point(1, ValueError())
     with pytest.raises(ValueError):
         Point(-1, 5)
+
+
+def test_Line_initialize():
+    point1 = Point(1, 1)
+    point2 = Point(5, 1)
+    line = Line(point1, point2)
+    assert line.from_point == point1 and line.to_point == point2
+
+
+def test_line_get_points_for_horizontal_line():
+    from_point = Point(1, 1)
+    to_point = Point(1, 5)
+    expected_points = [from_point, Point(1, 2), Point(1, 3), Point(1, 4), to_point]
+    line = Line(from_point, to_point)
+    points = line.get_points()
+    assert points == expected_points
+
+
+def test_Line_get_points_for_vertical_line():
+    from_point = Point(1, 1)
+    to_point = Point(5, 1)
+    expected_points = [from_point, Point(2, 1), Point(3, 1), Point(4, 1), to_point]
+    line = Line(from_point, to_point)
+    points = line.get_points()
+    assert points == expected_points
+
+
+def test_Rectangle_initialize():
+    top_left = Point(1, 1)
+    bottom_right = Point(5, 5)
+    rectangle = Rectangle(top_left, bottom_right)
+    assert rectangle.top_left_point == top_left and rectangle.bottom_right_point == bottom_right
+
+
+def test_Rectangle_get_lines():
+    top_right = Point(1, 1)
+    top_left = Point(5, 1)
+    bottom_left = Point(5, 5)
+    bottom_right = Point(1, 5)
+    rectangle = Rectangle(top_left, bottom_right)
+    expected_lines = [
+        Line(top_left, top_right),
+        Line(top_left, bottom_left),
+        Line(top_right, bottom_right),
+        Line(bottom_left, bottom_right)
+    ]
+    lines = rectangle.get_lines()
+    assert lines == expected_lines
