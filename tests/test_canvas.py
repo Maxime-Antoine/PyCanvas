@@ -8,6 +8,8 @@ from canvas import (
     Rectangle
 )
 
+######## Test Canvas ########
+
 def test_Canvas_creation_fails_whith_incorrect_params():
     with pytest.raises(TypeError):
         Canvas("width", 50)
@@ -29,22 +31,46 @@ def test_Canvas_draw_point():
     canvas = Canvas(width, height)
     x, y = 2, 3
     point = Point(x, y)
-    canvas.draw_point(point)
+    canvas._draw_point(point)
     assert canvas.cells[x][y] == (CanvasCellContentType.Line, 'x')
 
 
-def test_Canvas_draw_point_when_point_is_out_of_bounds():
-    width, height = 50, 50
-    canvas = Canvas(width, height)
-    x1, y1 = 300, 10
-    point1 = Point(x1, y1)
-    with pytest.raises(OutOfCanvasBoundError):
-        canvas.draw_point(point1)
-    x2, y2 = 10, 500
-    point2 = Point(x2, y2)
-    with pytest.raises(OutOfCanvasBoundError):
-        canvas.draw_point(point2)
+def test_Canvas_draw_line_horizontal():
+    canvas = Canvas(50, 50)
+    from_point = Point(3, 3)
+    to_point = Point(3, 35)
+    line = Line(from_point, to_point)
+    canvas.draw_line(line)
+    for point in line.get_points():
+        assert canvas.cells[point.x][point.y] == (CanvasCellContentType.Line, 'x')
 
+
+def test_Canvas_draw_line_vertical():
+    canvas = Canvas(50, 50)
+    from_point = Point(3, 3)
+    to_point = Point(3, 35)
+    line = Line(from_point, to_point)
+    canvas.draw_line(line)
+    for point in line.get_points():
+        assert canvas.cells[point.x][point.y] == (CanvasCellContentType.Line, 'x')
+
+
+def test_Canvas_draw_line_when_a_point_is_out_of_bounds():
+    canvas = Canvas(50, 50)
+    from_point1 = Point(3, 3)
+    to_point1 = Point(3, 350)
+    line1 = Line(from_point1, to_point1)
+    with pytest.raises(OutOfCanvasBoundError):
+        canvas.draw_line(line1)
+
+    from_point2 = Point(3, 300)
+    to_point2 = Point(3, 35)
+    line2 = Line(from_point2, to_point2)
+    with pytest.raises(OutOfCanvasBoundError):
+        canvas.draw_line(line2)
+
+
+######## Test Point ########
 
 def test_Point_initialize():
     x, y = 1, 2
@@ -60,6 +86,8 @@ def test_Point_creation_fails_whith_incorrect_params():
     with pytest.raises(ValueError):
         Point(-1, 5)
 
+
+######## Test Line ########
 
 def test_Line_initialize():
     point1 = Point(1, 1)
@@ -85,6 +113,8 @@ def test_Line_get_points_for_vertical_line():
     points = line.get_points()
     assert points == expected_points
 
+
+######## Test Rectangle ########
 
 def test_Rectangle_initialize():
     top_left = Point(1, 1)

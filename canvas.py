@@ -9,9 +9,7 @@ class Canvas(object):
             [(CanvasCellContentType.Empty, ' ') for i in range(width)] for j in range(height)
         ]
 
-    def draw_point(self, point):
-        if self._point_is_out_of_bound(point):
-            raise OutOfCanvasBoundError()
+    def _draw_point(self, point):
         self.cells[point.x][point.y] = (CanvasCellContentType.Line, 'x')
 
     def _point_is_out_of_bound(self, point):
@@ -20,7 +18,11 @@ class Canvas(object):
         return x_is_out_of_canvas_bound or y_is_out_of_canvas_bound
 
     def draw_line(self, line):
-        pass
+        if self._point_is_out_of_bound(line.from_point) or self._point_is_out_of_bound(line.to_point):
+            raise OutOfCanvasBoundError()
+
+        for point in line.get_points():
+            self._draw_point(point)
 
     def draw_rectangle(self, rectangle):
         pass
