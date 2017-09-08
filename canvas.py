@@ -96,11 +96,11 @@ class Rectangle(object):
         self.bottom_right_point = bottom_right_point
 
     def get_lines(self):
-        top_right_Point = Point(self.bottom_right_point.x, self.top_left_point.y)
+        top_right_point = Point(self.bottom_right_point.x, self.top_left_point.y)
         bottom_left_point = Point(self.top_left_point.x, self.bottom_right_point.y)
         return [
-            Line(self.top_left_point, top_right_Point),
+            Line(self.top_left_point, top_right_point),
             Line(self.top_left_point, bottom_left_point),
-            Line(top_right_Point, self.bottom_right_point),
+            Line(top_right_point, self.bottom_right_point),
             Line(bottom_left_point, self.bottom_right_point)
         ]
