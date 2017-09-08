@@ -1,4 +1,6 @@
 from enum import Enum
+from copy import deepcopy
+
 
 class Canvas(object):
 
@@ -8,6 +10,7 @@ class Canvas(object):
         self.cells = [
             [(CanvasCellContentType.Empty, ' ') for i in range(width)] for j in range(height)
         ]
+        self.previous_states = []
 
     def _draw_point(self, point):
         self.cells[point.x][point.y] = (CanvasCellContentType.Line, 'x')
@@ -21,6 +24,7 @@ class Canvas(object):
         if (self._point_is_out_of_bound(line.from_point) or
             self._point_is_out_of_bound(line.to_point)):
             raise OutOfCanvasBoundError()
+        self._save_state()
         self._draw_line(line)
 
     def _draw_line(self, line):
@@ -31,12 +35,14 @@ class Canvas(object):
         if (self._point_is_out_of_bound(rectangle.top_left_point) or
             self._point_is_out_of_bound(rectangle.bottom_right_point)):
             raise OutOfCanvasBoundError()
+        self._save_state()
         for line in rectangle.get_lines():
             self._draw_line(line)
 
     def bucket_fill(self, point, colour):
         if self._point_is_out_of_bound(point):
             raise OutOfCanvasBoundError()
+        self._save_state()
         self._bucket_fill(point, colour)
 
     def _bucket_fill(self, point, colour, reset_content_type=False):
@@ -76,10 +82,15 @@ class Canvas(object):
     def delete(self, point):
         if self._point_is_out_of_bound(point):
             raise OutOfCanvasBoundError()
+        self._save_state()
         self._bucket_fill(point, ' ', reset_content_type=True)
 
     def undo(self):
-        pass
+        if self.previous_states != []:
+            self.cells = self.previous_states.pop()
+
+    def _save_state(self):
+        self.previous_states.append(deepcopy(self.cells))
 
     def __str__(self):
         print(' ' + '-' * self.width + ' ')

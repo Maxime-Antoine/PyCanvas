@@ -164,6 +164,49 @@ def test_Canvas_delete_fails_when_target_out_of_bounds():
     with pytest.raises(OutOfCanvasBoundError):
         canvas.delete(target)
 
+def test_Canvas_undo_draw_line():
+    canvas = Canvas(10, 10)
+    line1 = Line(Point(0, 2), Point(9, 2))
+    canvas.draw_line(line1)
+    expected_cells_after_undo = deepcopy(canvas.cells)
+    line2 = Line(Point(0, 5), Point(9, 5))
+    canvas.draw_line(line2)
+    canvas.undo()
+    assert canvas.cells == expected_cells_after_undo
+
+
+def test_Canvas_undo_draw_rectangle():
+    canvas = Canvas(10, 10)
+    line = Line(Point(0, 2), Point(9, 2))
+    canvas.draw_line(line)
+    expected_cells_after_undo = deepcopy(canvas.cells)
+    rectangle = Rectangle(Point(1, 1), Point(3, 3))
+    canvas.draw_rectangle(rectangle)
+    canvas.undo()
+    assert canvas.cells == expected_cells_after_undo
+
+
+def test_Canvas_undo_bucket_fill():
+    canvas = Canvas(10, 10)
+    line = Line(Point(0, 2), Point(9, 2))
+    canvas.draw_line(line)
+    expected_cells_after_undo = deepcopy(canvas.cells)
+    canvas.bucket_fill(Point(0, 0), 'o')
+    canvas.undo()
+    assert canvas.cells == expected_cells_after_undo
+
+
+def test_Canvas_undo_delete():
+    canvas = Canvas(10, 10)
+    line = Line(Point(0, 2), Point(9, 2))
+    canvas.draw_line(line)
+    rectangle = Rectangle(Point(1, 1), Point(3, 3))
+    canvas.draw_rectangle(rectangle)
+    expected_cells_after_undo = deepcopy(canvas.cells)
+    canvas.delete(Point(3, 3))
+    canvas.undo()
+    assert canvas.cells == expected_cells_after_undo
+
 
 ######## Test Point ########
 
