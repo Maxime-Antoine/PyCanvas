@@ -1,6 +1,6 @@
 import pytest
 from canvas import (
-    Canvas, 
+    Canvas,
     CanvasCellContentType,
     OutOfCanvasBoundError,
     Point
@@ -50,3 +50,5 @@ def test_Point_creation_fails_whith_incorrect_params():
         Point("hi", 5)
     with pytest.raises(TypeError):
         Point(1, ValueError())
+    with pytest.raises(ValueError):
+        Point(-1, 5)

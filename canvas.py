@@ -44,3 +44,5 @@ class Point(object):
     def __init__(self, x, y):
         self.x = int(x)
         self.y = int(y)
+        if self.x < 0 or self.y < 0:
+            raise ValueError("(x,y) should both be convertible to positive integers")
