@@ -18,19 +18,26 @@ class Canvas(object):
         return x_is_out_of_canvas_bound or y_is_out_of_canvas_bound
 
     def draw_line(self, line):
-        if self._point_is_out_of_bound(line.from_point) or self._point_is_out_of_bound(line.to_point):
+        if (self._point_is_out_of_bound(line.from_point) or 
+            self._point_is_out_of_bound(line.to_point)):
             raise OutOfCanvasBoundError()
+        self._draw_line(line)
 
+    def _draw_line(self, line):
         for point in line.get_points():
             self._draw_point(point)
 
     def draw_rectangle(self, rectangle):
+        if (self._point_is_out_of_bound(rectangle.top_left_point) or 
+            self._point_is_out_of_bound(rectangle.bottom_right_point)):
+            raise OutOfCanvasBoundError()
+        for line in rectangle.get_lines():
+            self._draw_line(line)
+
+    def bucket_fill(self, point):
         pass
 
     def delete(self, point):
-        pass
-
-    def bucket_fill(self, point):
         pass
 
     def undo(self):

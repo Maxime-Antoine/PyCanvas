@@ -55,7 +55,7 @@ def test_Canvas_draw_line_vertical():
         assert canvas.cells[point.x][point.y] == (CanvasCellContentType.Line, 'x')
 
 
-def test_Canvas_draw_line_when_a_point_is_out_of_bounds():
+def test_Canvas_draw_line_fails_when_a_point_is_out_of_bounds():
     canvas = Canvas(50, 50)
     from_point1 = Point(3, 3)
     to_point1 = Point(3, 350)
@@ -68,6 +68,32 @@ def test_Canvas_draw_line_when_a_point_is_out_of_bounds():
     line2 = Line(from_point2, to_point2)
     with pytest.raises(OutOfCanvasBoundError):
         canvas.draw_line(line2)
+
+
+def test_Rectangle_draw_rectangle():
+    canvas = Canvas(50, 50)
+    top_left = Point(3, 3)
+    bottom_right = Point(10, 10)
+    rectangle = Rectangle(top_left, bottom_right)
+    canvas.draw_rectangle(rectangle)
+    for line in rectangle.get_lines():
+        for point in line.get_points():
+            assert canvas.cells[point.x][point.y] == (CanvasCellContentType.Line, 'x')
+
+
+def test_Rectangle_draw_rectangle_fails_when_a_point_is_out_of_bounds():
+    canvas = Canvas(50, 50)
+    top_left1 = Point(3, 350)
+    bottom_right1 = Point(10, 10)
+    rectangle1 = Rectangle(top_left1, bottom_right1)
+    with pytest.raises(OutOfCanvasBoundError):
+        canvas.draw_rectangle(rectangle1)
+
+    top_left2 = Point(3, 3)
+    bottom_right2 = Point(10, 100)
+    rectangle2 = Rectangle(top_left2, bottom_right2)
+    with pytest.raises(OutOfCanvasBoundError):
+        canvas.draw_rectangle(rectangle2)
 
 
 ######## Test Point ########
