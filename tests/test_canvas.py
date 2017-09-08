@@ -1,4 +1,5 @@
 import pytest
+from copy import deepcopy
 from canvas import (
     Canvas,
     CanvasCellContentType,
@@ -138,11 +139,23 @@ def test_Canvas_bucket_fill_fails_when_target_out_of_bounds():
 
 
 def test_Canvas_delete_shape():
-    pass
+    canvas = Canvas(10, 10)
+    line = Line(Point(0, 1), Point(9, 1))
+    expected_cells_after_delete = deepcopy(canvas.cells)
+    canvas.draw_line(line)
+    canvas.delete(Point(0, 1))
+    assert canvas.cells == expected_cells_after_delete
 
 
 def test_Canvas_delete_colour():
-    pass
+    width, height = 10, 10
+    canvas = Canvas(width, height)
+    line = Line(Point(0, 1), Point(9, 1))
+    canvas.draw_line(line)
+    expected_cells_after_delete = deepcopy(canvas.cells)
+    canvas.bucket_fill(Point(0, 0), 'o')
+    canvas.delete(Point(0, 0))
+    assert canvas.cells == expected_cells_after_delete
 
 
 def test_Canvas_delete_fails_when_target_out_of_bounds():

@@ -39,7 +39,7 @@ class Canvas(object):
             raise OutOfCanvasBoundError()
         self._bucket_fill(point, colour)
 
-    def _bucket_fill(self, point, colour):
+    def _bucket_fill(self, point, colour, reset_content_type=False):
         content_type_to_fill, _ = self.cells[point.x][point.y]
         processed = set()
         to_process = [point]
@@ -55,7 +55,10 @@ class Canvas(object):
             
             current_point_type, _ = self.cells[current_point.x][current_point.y]
             if current_point_type == content_type_to_fill:
-                self.cells[current_point.x][current_point.y] = (content_type_to_fill, colour)
+                if reset_content_type:
+                    self.cells[current_point.x][current_point.y] = (CanvasCellContentType.Empty, colour)
+                else:
+                    self.cells[current_point.x][current_point.y] = (content_type_to_fill, colour)
                 #enqueue non processed neighbours
                 left_neighbour = Point(current_point.x - 1, current_point.y)
                 if can_process_cell(left_neighbour):
@@ -73,7 +76,7 @@ class Canvas(object):
     def delete(self, point):
         if self._point_is_out_of_bound(point):
             raise OutOfCanvasBoundError()
-        #TODO rest of implementation
+        self._bucket_fill(point, ' ', reset_content_type=True)
 
     def undo(self):
         pass
