@@ -10,9 +10,14 @@ class Canvas(object):
         ]
 
     def draw_point(self, point):
-        if point.x >= self.width or point.y >= self.height:
+        if self._point_is_out_of_bound(point):
             raise OutOfCanvasBoundError()
         self.cells[point.x][point.y] = (CanvasCellContentType.Line, 'x')
+
+    def _point_is_out_of_bound(self, point):
+        x_is_out_of_canvas_bound = point.x < 0 or point.x >= self.width
+        y_is_out_of_canvas_bound = point.y < 0 or point.y >= self.height
+        return x_is_out_of_canvas_bound or y_is_out_of_canvas_bound
 
     def draw_line(self, line):
         pass

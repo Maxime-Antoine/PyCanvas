@@ -34,16 +34,21 @@ def test_Canvas_draw_point():
 def test_Canvas_draw_point_when_point_is_out_of_bounds():
     width, height = 50, 50
     canvas = Canvas(width, height)
-    x, y = 300, 500
-    point = Point(x, y)
+    x1, y1 = 300, 10
+    point1 = Point(x1, y1)
     with pytest.raises(OutOfCanvasBoundError):
-        canvas.draw_point(point)
+        canvas.draw_point(point1)
+    x2, y2 = 10, 500
+    point2 = Point(x2, y2)
+    with pytest.raises(OutOfCanvasBoundError):
+        canvas.draw_point(point2)
 
 
 def test_Point_initialize():
     x, y = 1, 2
     point = Point(x, y)
     assert point.x == x and point.y == y
+
 
 def test_Point_creation_fails_whith_incorrect_params():
     with pytest.raises(ValueError):
