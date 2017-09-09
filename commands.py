@@ -10,8 +10,8 @@ class ExitCommand(object):
 class CreateCanvasCommand(object):
 
     @staticmethod
-    def execute(width, height):
-        return Canvas(width, height)
+    def execute(width, height, callback):
+        callback(Canvas(width, height))
 
 
 class DrawLineCommand(object):

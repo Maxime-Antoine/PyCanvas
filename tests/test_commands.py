@@ -25,10 +25,11 @@ def test_exit_command_execute():
 def test_CreateCanvasCommand_execute():
     width, height = 100, 50
     command = CreateCanvasCommand
-    result = command.execute(width, height)
-    assert isinstance(result, Canvas)
-    assert result.width == width
-    assert result.height == height
+    def callback(result):
+        assert isinstance(result, Canvas)
+        assert result.width == width
+        assert result.height == height
+    command.execute(width, height, callback)
 
 
 def test_DrawLineCanvas_execute():
