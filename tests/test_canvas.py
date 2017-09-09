@@ -71,7 +71,7 @@ def test_Canvas_draw_line_fails_when_a_point_is_out_of_bounds():
         canvas.draw_line(line2)
 
 
-def test_Rectangle_draw_rectangle():
+def test_Canvas_draw_rectangle():
     canvas = Canvas(50, 50)
     top_left = Point(3, 3)
     bottom_right = Point(10, 10)
@@ -82,7 +82,7 @@ def test_Rectangle_draw_rectangle():
             assert canvas.cells[point.x][point.y] == (CanvasCellContentType.Line, 'x')
 
 
-def test_Rectangle_draw_rectangle_fails_when_a_point_is_out_of_bounds():
+def test_Canvas_draw_rectangle_fails_when_a_point_is_out_of_bounds():
     canvas = Canvas(50, 50)
     top_left1 = Point(3, 350)
     bottom_right1 = Point(10, 10)
