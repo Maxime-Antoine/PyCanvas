@@ -208,6 +208,20 @@ def test_Canvas_undo_delete():
     assert canvas.cells == expected_cells_after_undo
 
 
+def test_Canvas_str():
+    expected_canvas_str = (" ----- \n"
+                           "|     |\n"
+                           "|xxxxx|\n"
+                           "|ooooo|\n"
+                           "|xxxxx|\n"
+                           "|     |\n"
+                           " ----- ")
+    canvas = Canvas(5, 5)
+    canvas.draw_line(Line(Point(0, 1), Point(4, 1)))
+    canvas.draw_line(Line(Point(0, 3), Point(4, 3)))
+    canvas.bucket_fill(Point(2, 2), 'o')
+    assert str(canvas) == expected_canvas_str
+
 ######## Test Point ########
 
 def test_Point_initialize():
