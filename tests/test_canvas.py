@@ -209,12 +209,12 @@ def test_Canvas_undo_delete():
 
 
 def test_Canvas_str():
-    expected_canvas_str = (" ----- \n"
-                           "|     |\n"
-                           "|xxxxx|\n"
-                           "|ooooo|\n"
-                           "|xxxxx|\n"
-                           "|     |\n"
+    expected_canvas_str = (" ----- " "\n"
+                           "|     |" "\n"
+                           "|xxxxx|" "\n"
+                           "|ooooo|" "\n"
+                           "|xxxxx|" "\n"
+                           "|     |" "\n"
                            " ----- ")
     canvas = Canvas(5, 5)
     canvas.draw_line(Line(Point(0, 1), Point(4, 1)))
