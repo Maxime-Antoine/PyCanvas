@@ -93,14 +93,15 @@ class Canvas(object):
         self.previous_states.append(deepcopy(self.cells))
 
     def __str__(self):
-        print(' ' + '-' * self.width + ' ')
+        canvas_str = ' ' + '-' * self.width + ' \n'
         for y in range(self.height):
-            str_line = '|'
+            canvas_str += '|'
             for x in range(self.width):
                 _, colour = self.cells[x][y]
-                str_line += colour
-            print(str_line + '|' + '\n')
-        print(' ' + '-' * self.width + ' ')
+                canvas_str += colour
+            canvas_str += '|' + '\n'
+        canvas_str += ' ' + '-' * self.width + ' '
+        return canvas_str
 
 
 class CanvasCellContentType(Enum):
