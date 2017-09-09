@@ -10,7 +10,7 @@ class Canvas(object):
         self.cells = [
             [(CanvasCellContentType.Empty, ' ') for i in range(width)] for j in range(height)
         ]
-        self.previous_states = []
+        self._previous_states = []
 
     def _draw_point(self, point):
         self.cells[point.x][point.y] = (CanvasCellContentType.Line, 'x')
@@ -49,12 +49,12 @@ class Canvas(object):
         content_type_to_fill, _ = self.cells[point.x][point.y]
         processed = set()
         to_process = [point]
-        
+ 
         def can_process_cell(cell):
-            return (cell not in processed and 
-                    cell not in to_process and 
+            return (cell not in processed and
+                    cell not in to_process and
                     not self._point_is_out_of_bound(cell))
-        
+
         while to_process != []:
             current_point = to_process.pop()
             processed.add(current_point)
@@ -67,7 +67,7 @@ class Canvas(object):
                     self.cells[current_point.x][current_point.y] = (content_type_to_fill, colour)
                 #enqueue non processed neighbours
                 left_neighbour = Point(current_point.x - 1, current_point.y)
-                if can_process_cell(left_neighbour):
+                if can_process_cell(left_neighbour): 
                     to_process.insert(0, left_neighbour)
                 right_neighbour = Point(current_point.x + 1, current_point.y)
                 if can_process_cell(right_neighbour):
@@ -86,11 +86,11 @@ class Canvas(object):
         self._bucket_fill(point, ' ', reset_content_type=True)
 
     def undo(self):
-        if self.previous_states != []:
-            self.cells = self.previous_states.pop()
+        if self._previous_states != []:
+            self.cells = self._previous_states.pop()
 
     def _save_state(self):
-        self.previous_states.append(deepcopy(self.cells))
+        self._previous_states.append(deepcopy(self.cells))
 
     def __str__(self):
         canvas_str = ' ' + '-' * self.width + ' \n'
@@ -114,7 +114,7 @@ class OutOfCanvasBoundError(Exception):
 
 
 class Point(object):
-    
+
     def __init__(self, x, y):
         self.x = int(x)
         self.y = int(y)
