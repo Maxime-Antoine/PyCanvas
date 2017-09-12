@@ -156,6 +156,10 @@ class Rectangle(object):
         self.top_left_point = top_left_point
         self.bottom_right_point = bottom_right_point
 
+    def __eq__(self, other):
+        return self.top_left_point == other.top_left_point \
+           and self.bottom_right_point == other.bottom_right_point
+
     def get_lines(self):
         top_right_point = Point(self.bottom_right_point.x, self.top_left_point.y)
         bottom_left_point = Point(self.top_left_point.x, self.bottom_right_point.y)
