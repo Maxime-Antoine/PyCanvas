@@ -11,14 +11,14 @@ from canvas import (
 
 ######## Test Canvas ########
 
-def test_Canvas_creation_fails_whith_incorrect_params():
+def test_canvas_creation_fails_whith_incorrect_params():
     with pytest.raises(TypeError):
         Canvas("width", 50)
     with pytest.raises(TypeError):
         Canvas(50, [50])
 
 
-def test_Canvas_initialize():
+def test_canvas_initialize():
     width, height = 50, 50
     canvas = Canvas(width, height)
     assert canvas.width == width and canvas.height == height
@@ -27,7 +27,7 @@ def test_Canvas_initialize():
             assert canvas.cells[i][j] == (CanvasCellContentType.Empty, ' ')
 
 
-def test_Canvas_draw_point():
+def test_canvas_draw_point():
     width, height = 50, 50
     canvas = Canvas(width, height)
     x, y = 2, 3
@@ -36,7 +36,7 @@ def test_Canvas_draw_point():
     assert canvas.cells[x][y] == (CanvasCellContentType.Line, 'x')
 
 
-def test_Canvas_draw_line_horizontal():
+def test_canvas_draw_line_horizontal():
     canvas = Canvas(50, 50)
     from_point = Point(3, 3)
     to_point = Point(3, 35)
@@ -46,7 +46,7 @@ def test_Canvas_draw_line_horizontal():
         assert canvas.cells[point.x][point.y] == (CanvasCellContentType.Line, 'x')
 
 
-def test_Canvas_draw_line_vertical():
+def test_canvas_draw_line_vertical():
     canvas = Canvas(50, 50)
     from_point = Point(3, 3)
     to_point = Point(3, 35)
@@ -56,7 +56,7 @@ def test_Canvas_draw_line_vertical():
         assert canvas.cells[point.x][point.y] == (CanvasCellContentType.Line, 'x')
 
 
-def test_Canvas_draw_line_fails_when_a_point_is_out_of_bounds():
+def test_canvas_draw_line_fails_when_a_point_is_out_of_bounds():
     canvas = Canvas(50, 50)
     from_point1 = Point(3, 3)
     to_point1 = Point(3, 350)
@@ -71,7 +71,7 @@ def test_Canvas_draw_line_fails_when_a_point_is_out_of_bounds():
         canvas.draw_line(line2)
 
 
-def test_Canvas_draw_rectangle():
+def test_canvas_draw_rectangle():
     canvas = Canvas(50, 50)
     top_left = Point(3, 3)
     bottom_right = Point(10, 10)
@@ -82,7 +82,7 @@ def test_Canvas_draw_rectangle():
             assert canvas.cells[point.x][point.y] == (CanvasCellContentType.Line, 'x')
 
 
-def test_Canvas_draw_rectangle_fails_when_a_point_is_out_of_bounds():
+def test_canvas_draw_rectangle_fails_when_a_point_is_out_of_bounds():
     canvas = Canvas(50, 50)
     top_left1 = Point(3, 350)
     bottom_right1 = Point(10, 10)
@@ -97,7 +97,7 @@ def test_Canvas_draw_rectangle_fails_when_a_point_is_out_of_bounds():
         canvas.draw_rectangle(rectangle2)
 
 
-def test_Canvas_bucket_fill_shape():
+def test_canvas_bucket_fill_shape():
     width, height = 10, 10
     canvas = Canvas(width, height)
     line = Line(Point(0, 1), Point(9, 1))
@@ -113,7 +113,7 @@ def test_Canvas_bucket_fill_shape():
                 assert canvas.cells[x][y] == (CanvasCellContentType.Empty, ' ')
 
 
-def test_Canvas_bucket_fill_area():
+def test_canvas_bucket_fill_area():
     width, height = 10, 10
     canvas = Canvas(width, height)
     line = Line(Point(0, 2), Point(9, 2))
@@ -131,14 +131,14 @@ def test_Canvas_bucket_fill_area():
         assert canvas.cells[point.x][point.y] == (CanvasCellContentType.Line, 'x')
 
 
-def test_Canvas_bucket_fill_fails_when_target_out_of_bounds():
+def test_canvas_bucket_fill_fails_when_target_out_of_bounds():
     canvas = Canvas(50, 50)
     target = Point(100, 25)
     with pytest.raises(OutOfCanvasBoundError):
         canvas.bucket_fill(target, 'o')
 
 
-def test_Canvas_delete_shape():
+def test_canvas_delete_shape():
     canvas = Canvas(10, 10)
     line = Line(Point(0, 1), Point(9, 1))
     expected_cells_after_delete = deepcopy(canvas.cells)
@@ -147,7 +147,7 @@ def test_Canvas_delete_shape():
     assert canvas.cells == expected_cells_after_delete
 
 
-def test_Canvas_delete_colour():
+def test_canvas_delete_colour():
     width, height = 10, 10
     canvas = Canvas(width, height)
     line = Line(Point(0, 1), Point(9, 1))
@@ -158,13 +158,13 @@ def test_Canvas_delete_colour():
     assert canvas.cells == expected_cells_after_delete
 
 
-def test_Canvas_delete_fails_when_target_out_of_bounds():
+def test_canvas_delete_fails_when_target_out_of_bounds():
     canvas = Canvas(50, 50)
     target = Point(100, 25)
     with pytest.raises(OutOfCanvasBoundError):
         canvas.delete(target)
 
-def test_Canvas_undo_draw_line():
+def test_canvas_undo_draw_line():
     canvas = Canvas(10, 10)
     line1 = Line(Point(0, 2), Point(9, 2))
     canvas.draw_line(line1)
@@ -175,7 +175,7 @@ def test_Canvas_undo_draw_line():
     assert canvas.cells == expected_cells_after_undo
 
 
-def test_Canvas_undo_draw_rectangle():
+def test_canvas_undo_draw_rectangle():
     canvas = Canvas(10, 10)
     line = Line(Point(0, 2), Point(9, 2))
     canvas.draw_line(line)
@@ -186,7 +186,7 @@ def test_Canvas_undo_draw_rectangle():
     assert canvas.cells == expected_cells_after_undo
 
 
-def test_Canvas_undo_bucket_fill():
+def test_canvas_undo_bucket_fill():
     canvas = Canvas(10, 10)
     line = Line(Point(0, 2), Point(9, 2))
     canvas.draw_line(line)
@@ -196,7 +196,7 @@ def test_Canvas_undo_bucket_fill():
     assert canvas.cells == expected_cells_after_undo
 
 
-def test_Canvas_undo_delete():
+def test_canvas_undo_delete():
     canvas = Canvas(10, 10)
     line = Line(Point(0, 2), Point(9, 2))
     canvas.draw_line(line)
@@ -208,7 +208,7 @@ def test_Canvas_undo_delete():
     assert canvas.cells == expected_cells_after_undo
 
 
-def test_Canvas_str():
+def test_canvas_str():
     expected_canvas_str = (" ----- " "\n"
                            "|     |" "\n"
                            "|xxxxx|" "\n"
@@ -224,13 +224,13 @@ def test_Canvas_str():
 
 ######## Test Point ########
 
-def test_Point_initialize():
+def test_point_initialize():
     x, y = 1, 2
     point = Point(x, y)
     assert point.x == x and point.y == y
 
 
-def test_Point_creation_fails_whith_incorrect_params():
+def test_point_creation_fails_whith_incorrect_params():
     with pytest.raises(ValueError):
         Point("hi", 5)
     with pytest.raises(TypeError):
@@ -239,7 +239,7 @@ def test_Point_creation_fails_whith_incorrect_params():
 
 ######## Test Line ########
 
-def test_Line_initialize():
+def test_line_initialize():
     point1 = Point(1, 1)
     point2 = Point(5, 1)
     line = Line(point1, point2)
@@ -255,7 +255,7 @@ def test_line_get_points_for_horizontal_line():
     assert points == expected_points
 
 
-def test_Line_get_points_for_vertical_line():
+def test_line_get_points_for_vertical_line():
     from_point = Point(1, 1)
     to_point = Point(5, 1)
     expected_points = [from_point, Point(2, 1), Point(3, 1), Point(4, 1), to_point]
@@ -266,14 +266,14 @@ def test_Line_get_points_for_vertical_line():
 
 ######## Test Rectangle ########
 
-def test_Rectangle_initialize():
+def test_rectangle_initialize():
     top_left = Point(1, 1)
     bottom_right = Point(5, 5)
     rectangle = Rectangle(top_left, bottom_right)
     assert rectangle.top_left_point == top_left and rectangle.bottom_right_point == bottom_right
 
 
-def test_Rectangle_get_lines():
+def test_rectangle_get_lines():
     top_right = Point(1, 1)
     top_left = Point(5, 1)
     bottom_left = Point(5, 5)
