@@ -24,48 +24,84 @@ def test_exit_command_execute():
 
 def test_CreateCanvasCommand_execute():
     width, height = 100, 50
-    command = CreateCanvasCommand
     def callback(result):
         assert isinstance(result, Canvas)
         assert result.width == width
         assert result.height == height
-    command.execute(width, height, callback)
+    command = CreateCanvasCommand(callback)
+    command.execute(width, height)
 
 
-def test_DrawLineCanvas_execute():
+def test_DrawLineCommand_execute():
     canvas = Mock(spec=Canvas)
-    command = DrawLineCommand()
-    line = Line(Point(1, 1), Point(1, 10))
-    command.execute(canvas, line)
+    command = DrawLineCommand(lambda: canvas)
+    x1, y1, x2, y2 = 1, 1, 1, 10
+    line = Line(Point(x1, y1), Point(x2, y2))
+    command.execute([x1, y1, x2, y2])
     canvas.draw_line.assert_called_once_with(line)
 
 
-def test_DrawRectangleCanvas_execute():
+def test_DrawLineCommand_execute_with_incorrect_nb_args():
     canvas = Mock(spec=Canvas)
-    command = DrawRectangleCommand()
-    rectangle = Rectangle(Point(1, 1), Point(10, 10))
-    command.execute(canvas, rectangle)
+    command = DrawLineCommand(lambda: canvas)
+    with pytest.raises(ValueError) as ex:
+        command.execute([1, 1, 1])
+    assert str(ex.value) == "4 arguments expected (x1, y1, x2, y2)"
+
+
+def test_DrawRectangleCommand_execute():
+    canvas = Mock(spec=Canvas)
+    command = DrawRectangleCommand(lambda: canvas)
+    x1, y1, x2, y2 = 1, 1, 10, 10
+    rectangle = Rectangle(Point(x1, y1), Point(x2, y2))
+    command.execute([x1, y1, x2, y2])
     canvas.draw_rectangle.assert_called_once_with(rectangle)
+
+
+def test_DrawRectangleCommand_execute_with_incorrect_nb_args():
+    canvas = Mock(spec=Canvas)
+    command = DrawRectangleCommand(lambda: canvas)
+    with pytest.raises(ValueError) as ex:
+        command.execute([1, 1, 1])
+    assert str(ex.value) == "4 arguments expected (x1, y1, x2, y2)"
 
 
 def test_BucketFillCommand_execute():
     canvas = Mock(spec=Canvas)
-    command = BucketFillCommand()
-    target_point = Point(42, 69)
-    command.execute(canvas, target_point)
+    command = BucketFillCommand(lambda: canvas)
+    x1, y1 = 42, 69
+    target_point = Point(x1, y1)
+    command.execute((x1, y1))
     canvas.bucket_fill.assert_called_once_with(target_point)
+
+
+def test_BucketFillCommand_execute_with_incorrect_nb_args():
+    canvas = Mock(spec=Canvas)
+    command = BucketFillCommand(lambda: canvas)
+    with pytest.raises(ValueError) as ex:
+        command.execute([1])
+    assert str(ex.value) == "2 arguments expected (x1, y1)"
 
 
 def test_DeleteCommand_execute():
     canvas = Mock(spec=Canvas)
-    command = DeleteCommand()
-    target_point = Point(42, 69)
-    command.execute(canvas, target_point)
+    command = DeleteCommand(lambda: canvas)
+    x1, y1 = 42, 69
+    target_point = Point(x1, y1)
+    command.execute([x1, y1])
     canvas.delete.assert_called_once_with(target_point)
+
+
+def test_DeleteCommand_execute_with_incorrect_nb_args():
+    canvas = Mock(spec=Canvas)
+    command = DeleteCommand(lambda: canvas)
+    with pytest.raises(ValueError) as ex:
+        command.execute([1])
+    assert str(ex.value) == "2 arguments expected (x1, y1)"
 
 
 def test_UndoCommand_execute():
     canvas = Mock(spec=Canvas)
-    command = UndoCommand()
-    command.execute(canvas)
+    command = UndoCommand(lambda: canvas)
+    command.execute()
     canvas.undo.assert_called_once()
