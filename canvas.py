@@ -8,7 +8,9 @@ class Canvas(object):
         self.width = int(width)
         self.height = int(height)
         self.cells = [
-            [(CanvasCellContentType.Empty, ' ') for i in range(self.width)] for j in range(self.height)
+            [(CanvasCellContentType.Empty, ' ')
+             for i in range(self.width)]
+            for j in range(self.height)
         ]
         self._previous_states = []
 
@@ -49,7 +51,7 @@ class Canvas(object):
         content_type_to_fill, _ = self.cells[point.x][point.y]
         processed = set()
         to_process = [point]
- 
+
         def can_process_cell(cell):
             return (cell not in processed and
                     cell not in to_process and
@@ -58,7 +60,7 @@ class Canvas(object):
         while to_process != []:
             current_point = to_process.pop()
             processed.add(current_point)
-            
+
             current_point_type, _ = self.cells[current_point.x][current_point.y]
             if current_point_type == content_type_to_fill:
                 if reset_content_type:
@@ -67,7 +69,7 @@ class Canvas(object):
                     self.cells[current_point.x][current_point.y] = (content_type_to_fill, colour)
                 #enqueue non processed neighbours
                 left_neighbour = Point(current_point.x - 1, current_point.y)
-                if can_process_cell(left_neighbour): 
+                if can_process_cell(left_neighbour):
                     to_process.insert(0, left_neighbour)
                 right_neighbour = Point(current_point.x + 1, current_point.y)
                 if can_process_cell(right_neighbour):
