@@ -8,7 +8,7 @@ from canvas import (
 class ExitCommand(object):
 
     @staticmethod
-    def execute(args = None):
+    def execute(*args):
         raise SystemExit()
 
 
