@@ -15,7 +15,7 @@ canvas = None
 def main():
     commands = create_commands_dictionary()
 
-    while(True):
+    while True:
         user_input = input()
         input_items = user_input.split(' ')
         cmd_name = input_items[0]
@@ -27,8 +27,8 @@ def main():
         else:
             try:
                 cmd.execute(*cmd_args)
-            except (ValueError, TypeError) as e:
-                print(str(e))
+            except (ValueError, TypeError) as ex:
+                print(str(ex))
             else:
                 print(str(canvas))
 
