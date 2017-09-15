@@ -22,15 +22,13 @@ def main():
         cmd_args = input_items[1:]
         try:
             cmd = commands[cmd_name]
+            cmd.execute(*cmd_args)
         except KeyError:
             print("Unknown command")
+        except (ValueError, TypeError) as ex:
+            print(str(ex))
         else:
-            try:
-                cmd.execute(*cmd_args)
-            except (ValueError, TypeError) as ex:
-                print(str(ex))
-            else:
-                print(str(canvas))
+            print(str(canvas))
 
 
 def create_commands_dictionary():
