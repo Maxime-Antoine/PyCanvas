@@ -8,7 +8,7 @@ from canvas import (
 class ExitCommand(object):
 
     @staticmethod
-    def execute():
+    def execute(args = None):
         raise SystemExit()
 
 
@@ -17,8 +17,10 @@ class CreateCanvasCommand(object):
     def __init__(self, callback):
         self._callback = callback
 
-    def execute(self, width, height):
-        self._callback(Canvas(width, height))
+    def execute(self, args):
+        if len(args) < 2:
+            raise ValueError("2 arguments expected (width, heigth)")
+        self._callback(Canvas(args[0], args[1]))
 
 
 class DrawLineCommand(object):
@@ -53,7 +55,7 @@ class BucketFillCommand(object):
     def execute(self, args):
         if len(args) < 2:
             raise ValueError("2 arguments expected (x1, y1)")
-        self.get_canvas_fn().bucket_fill(Point(args[0], args[1]))
+        self.get_canvas_fn().bucket_fill(Point(args[0], args[1]), args[2])
 
 
 class DeleteCommand(object):

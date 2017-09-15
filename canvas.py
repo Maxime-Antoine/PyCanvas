@@ -5,10 +5,10 @@ from copy import deepcopy
 class Canvas(object):
 
     def __init__(self, width, height):
-        self.width = width
-        self.height = height
+        self.width = int(width)
+        self.height = int(height)
         self.cells = [
-            [(CanvasCellContentType.Empty, ' ') for i in range(width)] for j in range(height)
+            [(CanvasCellContentType.Empty, ' ') for i in range(self.width)] for j in range(self.height)
         ]
         self._previous_states = []
 
