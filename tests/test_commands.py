@@ -37,7 +37,7 @@ def test_draw_line_command_execute():
     command = DrawLineCommand(lambda: canvas)
     x1, y1, x2, y2 = 1, 1, 1, 10
     line = Line(Point(x1, y1), Point(x2, y2))
-    command.execute([x1, y1, x2, y2])
+    command.execute(x1, y1, x2, y2)
     canvas.draw_line.assert_called_once_with(line)
 
 
@@ -45,7 +45,7 @@ def test_draw_line_command_execute_with_incorrect_nb_args():
     canvas = Mock(spec=Canvas)
     command = DrawLineCommand(lambda: canvas)
     with pytest.raises(ValueError) as ex:
-        command.execute([1, 1, 1])
+        command.execute(1, 1, 1)
     assert str(ex.value) == "4 arguments expected (x1, y1, x2, y2)"
 
 
@@ -54,7 +54,7 @@ def test_draw_rectangle_command_execute():
     command = DrawRectangleCommand(lambda: canvas)
     x1, y1, x2, y2 = 1, 1, 10, 10
     rectangle = Rectangle(Point(x1, y1), Point(x2, y2))
-    command.execute([x1, y1, x2, y2])
+    command.execute(x1, y1, x2, y2)
     canvas.draw_rectangle.assert_called_once_with(rectangle)
 
 
@@ -62,17 +62,17 @@ def test_draw_rectangle_command_execute_with_incorrect_nb_args():
     canvas = Mock(spec=Canvas)
     command = DrawRectangleCommand(lambda: canvas)
     with pytest.raises(ValueError) as ex:
-        command.execute([1, 1, 1])
+        command.execute(1, 1, 1)
     assert str(ex.value) == "4 arguments expected (x1, y1, x2, y2)"
 
 
 def test_bucket_fill_command_execute():
     canvas = Mock(spec=Canvas)
     command = BucketFillCommand(lambda: canvas)
-    x1, y1 = 42, 69
-    target_point = Point(x1, y1)
-    command.execute((x1, y1))
-    canvas.bucket_fill.assert_called_once_with(target_point)
+    x, y = 42, 69
+    target_point, colour = Point(x, y), 'c'
+    command.execute(x, y, colour)
+    canvas.bucket_fill.assert_called_once_with(target_point, colour)
 
 
 def test_bucket_fill_command_execute_with_incorrect_nb_args():
@@ -80,7 +80,7 @@ def test_bucket_fill_command_execute_with_incorrect_nb_args():
     command = BucketFillCommand(lambda: canvas)
     with pytest.raises(ValueError) as ex:
         command.execute([1])
-    assert str(ex.value) == "2 arguments expected (x1, y1)"
+    assert str(ex.value) == "3 arguments expected (x, y, colour)"
 
 
 def test_delete_command_execute():
@@ -88,7 +88,7 @@ def test_delete_command_execute():
     command = DeleteCommand(lambda: canvas)
     x1, y1 = 42, 69
     target_point = Point(x1, y1)
-    command.execute([x1, y1])
+    command.execute(x1, y1)
     canvas.delete.assert_called_once_with(target_point)
 
 
@@ -97,7 +97,7 @@ def test_delete_command_execute_with_incorrect_nb_args():
     command = DeleteCommand(lambda: canvas)
     with pytest.raises(ValueError) as ex:
         command.execute([1])
-    assert str(ex.value) == "2 arguments expected (x1, y1)"
+    assert str(ex.value) == "2 arguments expected (x, y)"
 
 
 def test_undo_command_execute():

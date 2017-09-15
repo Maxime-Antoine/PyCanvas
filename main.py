@@ -26,7 +26,7 @@ def main():
             print("Unknown command")
         else:
             try:
-                cmd.execute(cmd_args)
+                cmd.execute(*cmd_args)
             except (ValueError, TypeError) as e:
                 print(str(e))
             else:

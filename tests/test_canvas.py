@@ -12,7 +12,7 @@ from canvas import (
 ######## Test Canvas ########
 
 def test_canvas_creation_fails_whith_incorrect_params():
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         Canvas("width", 50)
     with pytest.raises(TypeError):
         Canvas(50, [50])
