@@ -8,7 +8,7 @@ from canvas import (
 class ExitCommand(object):
 
     @staticmethod
-    def execute(*args):
+    def execute(*_):
         raise SystemExit()
 
 
@@ -82,5 +82,5 @@ class UndoCommand(object):
     def __init__(self, get_canvas_fn):
         self.get_canvas_fn = get_canvas_fn
 
-    def execute(self, *args):
+    def execute(self, *_):
         self.get_canvas_fn().undo()
