@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+'''
+Canvas application launcher
+'''
+
 from commands import (
     ExitCommand,
     CreateCanvasCommand,
@@ -13,7 +17,10 @@ from commands import (
 canvas = None
 
 def main():
-    commands = create_commands_dictionary()
+    '''
+    Canvas application entry point
+    '''
+    commands = _create_commands_dictionary()
 
     while True:
         user_input = input()
@@ -31,10 +38,11 @@ def main():
             print(str(canvas))
 
 
-def create_commands_dictionary():
-    def assign_canvas_fn(x):
+def _create_commands_dictionary():
+    def assign_canvas_fn(new_canvas):
+        #pylint: disable=missing-docstring
         global canvas
-        canvas = x
+        canvas = new_canvas
 
     return {
         'C': CreateCanvasCommand(assign_canvas_fn),
