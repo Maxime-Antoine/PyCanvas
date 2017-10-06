@@ -1,15 +1,15 @@
-'''
+"""
 This module defines the canvas and the shape objects of the application
-'''
+"""
 
 from enum import Enum
 from copy import deepcopy
 
 
 class Canvas(object):
-    '''
+    """
     Represents a canvas of arbitrary size to draw on
-    '''
+    """
     def __init__(self, width, height):
         self.width = int(width)
         self.height = int(height)
@@ -29,12 +29,12 @@ class Canvas(object):
         return x_is_out_of_canvas_bound or y_is_out_of_canvas_bound
 
     def draw_line(self, line):
-        '''
+        """
         Draw a line on the canvas
 
         Args:
             line: the line to be drawn on the canvas
-        '''
+        """
         if (self._point_is_out_of_bound(line.from_point) or
             self._point_is_out_of_bound(line.to_point)):
             raise OutOfCanvasBoundError()
@@ -46,12 +46,12 @@ class Canvas(object):
             self._draw_point(point)
 
     def draw_rectangle(self, rectangle):
-        '''
+        """
         Draw a rectangle on the canvas
 
         Args:
             rectangle: the rectangle to be drawn on the canvas
-        '''
+        """
         if (self._point_is_out_of_bound(rectangle.top_left_point) or
             self._point_is_out_of_bound(rectangle.bottom_right_point)):
             raise OutOfCanvasBoundError()
@@ -60,13 +60,13 @@ class Canvas(object):
             self._draw_line(line)
 
     def bucket_fill(self, point, colour):
-        '''
+        """
         Paint a shape or a zone of the canvas with an arbitrary colour
 
         Args:
             point: the point from which to paint the connected shape or zone
             colour: the colour to paint with
-        '''
+        """
         if self._point_is_out_of_bound(point):
             raise OutOfCanvasBoundError()
         self._save_state()
@@ -108,18 +108,18 @@ class Canvas(object):
                     to_process.insert(0, bottom_neighbour)
 
     def delete(self, point):
-        '''
+        """
         Delete a shape or reset the colour of a zone
-        '''
+        """
         if self._point_is_out_of_bound(point):
             raise OutOfCanvasBoundError()
         self._save_state()
         self._bucket_fill(point, ' ', reset_content_type=True)
 
     def undo(self):
-        '''
+        """
         Undo the last action
-        '''
+        """
         if self._previous_states != []:
             self.cells = self._previous_states.pop()
 
@@ -140,9 +140,9 @@ class Canvas(object):
 
 
 class CanvasCellContentType(Enum):
-    '''
+    """
     The represent the possible content types of a canvas cell
-    '''
+    """
     Empty = 1
     Line = 2
 
@@ -154,12 +154,12 @@ class OutOfCanvasBoundError(Exception):
 
 class Point(object):
     #pylint: disable=too-few-public-methods
-    '''
+    """
     Represents a point of the canvas
 
     Args:
         x, y: the integer coordinates of the point
-    '''
+    """
     def __init__(self, x, y):
         #pylint: disable=invalid-name
         self.x = int(x)
@@ -174,12 +174,12 @@ class Point(object):
 
 class Line(object):
     #pylint: disable=too-few-public-methods
-    '''
+    """
     Represents a line
 
     Args:
         from_point, to_point: the 2 points delimiting the line
-    '''
+    """
     def __init__(self, from_point, to_point):
         self.from_point = from_point
         self.to_point = to_point
@@ -188,9 +188,9 @@ class Line(object):
         return self.from_point == other.from_point and self.to_point == other.to_point
 
     def get_points(self):
-        '''
+        """
             Returns the list of the points that are part of the line
-        '''
+        """
         if self._is_horizontal():
             return [Point(self.from_point.x, y) for y in range(self.from_point.y, self.to_point.y + 1)]
         elif self._is_vertical():
@@ -207,13 +207,13 @@ class Line(object):
 
 class Rectangle(object):
     #pylint: disable=too-few-public-methods
-    '''
+    """
     Represents a rectangle
 
     Args:
         top_left_point: the top-left corner of the rectangle
         bottom_right_point: the bottom-right corner of the rectangle
-    '''
+    """
     def __init__(self, top_left_point, bottom_right_point):
         self.top_left_point = top_left_point
         self.bottom_right_point = bottom_right_point
@@ -223,9 +223,9 @@ class Rectangle(object):
            and self.bottom_right_point == other.bottom_right_point
 
     def get_lines(self):
-        '''
+        """
         Returns the 4 lines forming the rectangle
-        '''
+        """
         top_right_point = Point(self.bottom_right_point.x, self.top_left_point.y)
         bottom_left_point = Point(self.top_left_point.x, self.bottom_right_point.y)
         return [

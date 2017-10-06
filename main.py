@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-'''
+"""
 Canvas application launcher
-'''
+"""
 
 from commands import (
     ExitCommand,
@@ -17,9 +17,9 @@ from commands import (
 canvas = None
 
 def main():
-    '''
+    """
     Canvas application entry point
-    '''
+    """
     commands = _create_commands_dictionary()
 
     while True:
