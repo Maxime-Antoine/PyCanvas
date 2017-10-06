@@ -23,7 +23,7 @@ In a nutshell, the program should works as follows:
 
  *** Assumptions ***
 
-- From the example inputs: coordinates are 1-based, origin is (1, 1) at the top right corner of the canvas.
+- Coordinates are 1-based, origin is (1, 1) at the top right corner of the canvas.
 - Commands are case sensitive.
 - All current commands are a single character, but that could change in the future.
 - "Colours" are alphanumericals characters.
