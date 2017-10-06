@@ -1,4 +1,3 @@
-import pytest
 from copy import deepcopy
 from canvas import (
     Canvas,
@@ -8,6 +7,8 @@ from canvas import (
     Line,
     Rectangle
 )
+
+import pytest
 
 ######## Test Canvas ########
 

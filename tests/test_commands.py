@@ -1,4 +1,3 @@
-import pytest
 from unittest.mock import Mock
 from canvas import (
     Canvas,
@@ -15,6 +14,8 @@ from commands import (
     DeleteCommand,
     UndoCommand
 )
+
+import pytest
 
 def test_exit_command_execute():
     command = ExitCommand()
